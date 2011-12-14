@@ -18,7 +18,7 @@
         years (map (comp :year first) groups)]
     (map (fn [y g] [y (average func g)]) years groups)))
 
-(defn reduce-group [func current group]
+(defn group-reduce-weighted [func current group]
   (reduce (fn [[_ avg] vote]
             [(:date vote)
              (+ (* 0.995 avg) (* 0.005 (func vote)))])
@@ -27,7 +27,7 @@
 (defn weighted-averages [func votes]
   (let [groups (partition-by :date (filter metrics/contested? votes))
         start [nil (average func (apply concat (take 30 groups)))]]
-    (next (reductions (partial reduce-group func) start groups))))
+    (next (reductions (partial group-reduce-weighted func) start groups))))
 
 (defn unity-chart [votes & opts]
   (let [opt-map (apply hash-map opts)
