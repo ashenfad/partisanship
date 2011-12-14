@@ -6,19 +6,26 @@
             (clj-time [format :as tf]
                       [core :as tc])))
 
-(defn fraction-sum [func group]
-  (let [score (int (* 1000 (reduce + (map func group))))
-        score-count (* 10 (count group))
-        date (:date (first group))]
-    {:date date :score score :score-count score-count}))
+(defn average [func votes]
+  (let [contested (filter metrics/contested? votes)
+        sum (reduce + (map func contested))
+        tc (count contested)]
+    (/ sum tc)))
 
-(defn sparse-averages [func votes]
-  (let [groups (partition-by :date (filter metrics/contested? votes))]
-    (map #(fraction-sum func %) groups)))
+(defn group-reduce-weighted [func current group]
+  (reduce (fn [{:keys [score]} vote]
+            {:date (:date vote)
+             :score (+ (* 0.995 score) (* 0.005 (func vote)))})
+          current group))
+
+(defn weighted-averages [func votes]
+  (let [groups (partition-by :date (filter metrics/contested? votes))
+        start {:date nil :score (average func (apply concat (take 30 groups)))}]
+    (next (reductions (partial group-reduce-weighted func) start groups))))
 
 (defn dense-averages [func votes]
-  (let [sparse-list (sparse-averages func votes)
-        sparse-map (reduce (fn [sm val] (assoc sm (:date val) (dissoc val :date)))
+  (let [sparse-list (weighted-averages func votes)
+        sparse-map (reduce (fn [sm val] (assoc sm (:date val) (:score val)))
                            (sorted-map)
                            sparse-list)
         start-date (tf/parse (first (keys sparse-map)))
@@ -26,15 +33,13 @@
         date-range (map #(tf/unparse vote/date-fmt %)
                         (take-while #(not (tc/after? % end-date))
                                     (iterate #(tc/plus % (tc/days 1)) start-date)))]
-    (map (fn [date] [date (get sparse-map date)]) date-range)))
-
-(defn dygraph-score [score]
-  (if score
-    (str (:score score) "/" (:score-count score))
-    "null"))
+    (map (fn [date]
+           [date (format "%1$.2f"
+                         (* 100 (second (first (rsubseq sparse-map <= date)))))])
+         date-range)))
 
 (defn dygraph-row [date & scores]
-  (let [vals (concat (list date) (map dygraph-score scores))]
+  (let [vals (concat (list date) (map str scores))]
     (apply str (interpose "," vals))))
 
 (defn write-file [file rows]
