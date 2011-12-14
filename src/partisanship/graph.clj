@@ -29,7 +29,7 @@
         start [nil (average func (apply concat (take 30 groups)))]]
     (next (reductions (partial reduce-group func) start groups))))
 
-(defn unity [votes & opts]
+(defn unity-chart [votes & opts]
   (let [opt-map (apply hash-map opts)
         vals (for [p [:R :D]] (weighted-averages #(* 100 (metrics/unity p %)) votes))
         combined (apply map (fn [[date rv] [_ dv]]
@@ -42,7 +42,7 @@
         (charts/set-x-label nil)
         (charts/set-title (:title opt-map))))))
 
-(defn partisanship [votes & opts]
+(defn partisanship-chart [votes & opts]
   (let [opt-map (apply hash-map opts)
         vals (map (fn [[y v]] [(.getMillis (tf/parse (str y))) v])
                   (weighted-averages #(* 100 (metrics/partisanship %)) votes))]
@@ -53,17 +53,17 @@
         (charts/set-x-label nil)
         (charts/set-title (:title opt-map))))))
 
-(defn generate-graphs []
-  (core/save (partisanship (vote/house) :title "House - Partisanship")
+(defn generate-charts []
+  (core/save (partisanship-chart (vote/house) :title "House - Partisanship")
              "graphs/house-partisanship.png" :width 1000 :height 300)
-  (core/save (unity (vote/house) :title "House - Unity")
+  (core/save (unity-chart (vote/house) :title "House - Unity")
              "graphs/house-unity.png" :width 1000 :height 300)
-  (core/save (partisanship (vote/senate) :title "Senate - Partisanship")
+  (core/save (partisanship-chart (vote/senate) :title "Senate - Partisanship")
              "graphs/senate-partisanship.png" :width 1000 :height 300)
-  (core/save (unity (vote/senate) :title "Senate - Unity")
+  (core/save (unity-chart (vote/senate) :title "Senate - Unity")
              "graphs/senate-unity.png" :width 1000 :height 300))
 
 (defn -main [& args]
   (println "Generating graphs...")
-  (generate-graphs)
+  (generate-charts)
   (println "Finished!"))
