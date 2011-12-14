@@ -3,7 +3,6 @@
             (clojure.java [io :as io])
             (clj-time [format :as tf])))
 
-(def external-loc "https://github.com/downloads/ashenfad/intime/")
 (def data-dir "data/")
 (def files {:house "house-votes.data" :senate "senate-votes.data"})
 (def date-fmt (:year-month-day tf/formatters))
