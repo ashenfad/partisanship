@@ -42,13 +42,26 @@
   (let [vals (concat (list date) (map str scores))]
     (apply str (interpose "," vals))))
 
-(defn write-file [file rows]
+(defn write-file [file header rows]
   (with-open [wrtr (io/writer file)]
+    (.write wrtr (str header "\n"))
     (doseq [line rows]
       (.write wrtr (str line "\n")))))
 
-(defn generate-partisanship [branch-type]
-  (let [averages (dense-averages metrics/partisanship (vote/branch branch-type))
-        averages (remove #(nil? (second %)) averages)
-        rows (map #(apply dygraph-row %) averages)]
-    (write-file (str "data/dygraph-partisanship-" (name branch-type) ".csv") rows)))
+(defn weekly-partisanship [branch-type]
+  (let [avgs (dense-averages metrics/partisanship (vote/branch branch-type))]
+    (filter #(= 7 (tc/day-of-week (tf/parse (first %)))) avgs)))
+
+(defn generate-partisanship
+  ([branch-type]
+     (let [avgs (weekly-partisanship branch-type)
+           rows (map #(apply dygraph-row %) avgs)]
+       (write-file (str "data/partisanship-" (name branch-type) ".csv")
+                   "Date,Partisanship"
+                   rows)))
+  ([]
+     (let [house-avgs (weekly-partisanship :house)
+           senate-avgs (weekly-partisanship :senate)
+           avgs (map (fn [[date v1] [_ v2]] [date v1 v2]) house-avgs senate-avgs)
+           rows (map #(apply dygraph-row %) avgs)]
+       (write-file "data/partisanship.csv" "Date,House,Senate" rows))))
