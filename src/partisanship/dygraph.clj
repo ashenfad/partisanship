@@ -44,5 +44,6 @@
 
 (defn generate-partisanship [branch-type]
   (let [averages (dense-averages metrics/partisanship (vote/branch branch-type))
+        averages (remove #(nil? (second %)) averages)
         rows (map #(apply dygraph-row %) averages)]
     (write-file (str "data/dygraph-partisanship-" (name branch-type) ".csv") rows)))
