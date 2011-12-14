@@ -18,7 +18,7 @@
 (defn- pattern [res pattern]
   (map html/text (html/select res pattern)))
 
-(defn- scraper [year vote]
+(defn scraper [year vote]
   (try
     (let [res (html/html-resource (java.net.URL. (to-url year vote)))
           votes (map (fn [p v] {(keyword p) {(keyword (string/lower-case v)) 1}})
@@ -29,7 +29,7 @@
                          (map (fn [[p o]] {p (select-keys o [:yea :nay])}) outcome))
           date (first (pattern res [:vote_date]))]
       (when date
-        (println "  Scraping" year vote)
+        (println "Senate -" year vote)
         (if (not (or (empty? outcome) (empty? (:D outcome)) (empty? (:R outcome))))
           {:year year
            :vote vote
@@ -37,8 +37,3 @@
            :outcome outcome}
           {})))
     (catch Exception _ nil)))
-
-(defn -main [& args]
-  (println "Update senate roll-call votes.  This might take a while...")
-  (vote/update scraper :senate)
-  (println "Finished!"))

@@ -11,7 +11,7 @@
 (defn pattern [res pattern]
   (map html/text (html/select res pattern)))
 
-(defn- scraper [year vote]
+(defn scraper [year vote]
   (let [res (html/html-resource (java.net.URL. (to-url year vote)))
         parties (pattern res [:party])
         yeas (butlast (pattern res [:yea-total]))
@@ -23,15 +23,10 @@
                                       :nay (Integer/parseInt nay)}})
                                   parties yeas nays))]
     (when date
-      (println "  Scraping" year vote)
+      (println "House -" year vote)
       (if (not (empty? outcome))
         {:year year
          :vote vote
          :date (tf/unparse vote/date-fmt (tf/parse in-fmt date))
          :outcome outcome}
         {}))))
-
-(defn -main [& args]
-  (println "Update house roll-call votes.  This might take a while...")
-  (vote/update scraper :house)
-  (println "Finished!"))

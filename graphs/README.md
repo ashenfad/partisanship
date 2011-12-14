@@ -1,4 +1,4 @@
 This directory contains the generated graphs after running:
 
-> lein run :graphs
+> lein run :graph
 
