@@ -52,16 +52,9 @@
   (let [avgs (dense-averages metrics/partisanship (vote/branch branch-type))]
     (filter #(= 7 (tc/day-of-week (tf/parse (first %)))) avgs)))
 
-(defn generate-partisanship
-  ([branch-type]
-     (let [avgs (weekly-partisanship branch-type)
-           rows (map #(apply dygraph-row %) avgs)]
-       (write-file (str "data/partisanship-" (name branch-type) ".csv")
-                   "Date,Partisanship"
-                   rows)))
-  ([]
-     (let [house-avgs (weekly-partisanship :house)
-           senate-avgs (weekly-partisanship :senate)
-           avgs (map (fn [[date v1] [_ v2]] [date v1 v2]) house-avgs senate-avgs)
-           rows (map #(apply dygraph-row %) avgs)]
-       (write-file "data/partisanship.csv" "Date,House,Senate" rows))))
+(defn generate-partisanship []
+  (let [house-avgs (weekly-partisanship :house)
+        senate-avgs (weekly-partisanship :senate)
+        avgs (map (fn [[date v1] [_ v2]] [date v1 v2]) house-avgs senate-avgs)
+        rows (map #(apply dygraph-row %) avgs)]
+    (write-file "data/partisanship.csv" "Date,House,Senate" rows)))
