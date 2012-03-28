@@ -3,3 +3,4 @@
 /data/*.data
 /data/*.csv
 /graphs/*.png
+.lein-deps-sum
