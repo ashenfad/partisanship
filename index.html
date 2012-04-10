@@ -2,6 +2,11 @@
 <html>
 
   <head>
+    <!--[if IE]>
+      <script type="text/javascript" src="javascripts/excanvas.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="javascripts/dygraph-combined.js"></script>
+
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Partisanship Watch : Tracking Partisanship in the US Congress" />
@@ -42,6 +47,10 @@ $ git checkout gh-pages
 
 <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 
+<p><div id="partisanship"></div></p>
+<p><div id="senate-unity"></div></p>
+<p><div id="house-unity"></div></p>
+
 <h3>Designer Templates</h3>
 
 <p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
@@ -68,17 +77,50 @@ $ git checkout gh-pages
       </footer>
     </div>
 
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-30723215-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+      var pageTracker = _gat._getTracker("UA-30723215-1");
+      pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
+    <script type="text/javascript">
+      new Dygraph(
+        document.getElementById("partisanship"),
+        "partisanship.csv",
+        {colors: ['#00B85C', '#5C00B8'],
+         fillGraph: true,
+         rollPeriod: 1,
+         title: 'Partisanship in the US Congress',
+         ylabel: 'Score',
+         legend: 'always',
+         labelsDivStyles: { 'textAlign': 'right' }});
 
+      new Dygraph(
+        document.getElementById("senate-unity"),
+        "senate-unity.csv",
+        {colors: ['#2900CC', '#CC2900'],
+         fillGraph: true,
+         rollPeriod: 1,
+         title: 'Party Unity in the Senate',
+         ylabel: 'Score',
+         legend: 'always',
+         labelsDivStyles: { 'textAlign': 'right' }});
+
+      new Dygraph(
+        document.getElementById("house-unity"),
+        "house-unity.csv",
+        {colors: ['#2900CC', '#CC2900'],
+         fillGraph: true,
+         rollPeriod: 1,
+         title: 'Party Unity in the House',
+         ylabel: 'Score',
+         legend: 'always',
+         labelsDivStyles: { 'textAlign': 'right' }});
+    </script>
 
   </body>
 </html>
