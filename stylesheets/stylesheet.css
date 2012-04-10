@@ -268,7 +268,7 @@ Full-Width Styles
 
 .dygraph {
   height: 250px;
-  padding: 5px;
+  padding-bottom: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,.1);
   background-color: #fff;
 
