@@ -42,9 +42,9 @@ $ git checkout gh-pages
 
 <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 
-<p><div id="labels1"><div id="partisanship" class="inner dygraph"></div></p>
-<p><div id="senate-unity" class="inner dygraph"></div></p>
-<p><div id="house-unity" class="inner dygraph"></div></p>
+<p><div id="partisanship" class="dygraph"></div></p>
+<p><div id="senate-unity" class="dygraph"></div></p>
+<p><div id="house-unity" class="dygraph"></div></p>
 
 <h3>Designer Templates</h3>
 
@@ -92,7 +92,6 @@ $ git checkout gh-pages
          rollPeriod: 1,
          ylabel: 'Score',
          legend: 'always',
-         labelsDiv: document.getElementById("labels"),
          labelsDivStyles: { 'textAlign': 'right' }});
 
       new Dygraph(
