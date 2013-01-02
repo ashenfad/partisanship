@@ -267,6 +267,7 @@ Full-Width Styles
 *******************************************************************************/
 
 #metric-diagram {
+  background: #ffffff;
   width: 338px;
   float: right;
   margin-left: 10px;
