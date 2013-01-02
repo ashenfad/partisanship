@@ -260,6 +260,7 @@ form {
 img {
   width: 100%;
   max-width: 100%;
+  background: #ffffff;
 }
 
 /*******************************************************************************
@@ -267,7 +268,6 @@ Full-Width Styles
 *******************************************************************************/
 
 #metric-diagram {
-  background: #ffffff;
   width: 338px;
   float: right;
   margin-left: 10px;
