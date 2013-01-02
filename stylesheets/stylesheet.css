@@ -266,6 +266,10 @@ img {
 Full-Width Styles
 *******************************************************************************/
 
+#metric-diagram {
+  width: 338px;
+}
+
 .dygraph {
   height: 250px;
   padding-bottom: 10px;
