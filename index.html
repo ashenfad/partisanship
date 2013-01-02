@@ -24,7 +24,7 @@
           <a id="forkme_banner" href="https://github.com/ashenfad/partisanship">View on GitHub</a>
 
           <h1 id="project_title">Partisanship Watch</h1>
-          <h2 id="project_tagline">Tracking Partisanship in the US Congress</h2>
+          <h2 id="project_tagline">Measuring Partisanship Trends in the US Congress</h2>
         </header>
     </div>
 
@@ -35,30 +35,42 @@
 <hr/>
 <h3>Congressional Partisanship</h3>
 
-<p>The trend is clear. Congressional politics are increasingly contentious.</p>
+<p>I started this project wondering whether the US Congress really was more contentious now than in the recent past or if that impression was just unexamined nostalgia. Luckily for this question, there was data easily available to help form an answer.</p>
 
-<p><div id="partisanship" class="dygraph"></div></p>
+<p>I collected <a href="http://en.wikipedia.org/wiki/Recorded_vote#United_States_Congress">roll-call votes</a> for both the House and Senate from 1900 to 2010 (thanks to <a href="http://govtrack.us/">govtrack.us</a>). After cooking up a metric for measuring the disagreement between the parties, we can see that voting behavior in both branches of congress really has been getting naster. Ever since the 1970 (the low point in partisan voting - perhaps due to party realignment after civil rights) there is a clear and steady trend toward more inflexible parties. It's been about a century since we've seen voting as hard line as we do now.</p>
 
 <p><div id="historical-partisanship" class="dygraph"></div></p>
 
-<h5>What is this?</h5>
+The graph above provides yearly averages for partisanship, but I wanted to have a finer grained view of the trends. So I charted the <a href="http://en.wikipedia.org/wiki/Moving_average">moving average</a> of the partisanship from 1990 until now:
+
+<p><div id="partisanship" class="dygraph"></div></p>
+
+<h5>What's the metric?</h5>
+
+<p>My partisanship metric is nothing fancy. It's simply a number from 0 to 100 representing how much the Democrats and Republicans disagree. If the two parties completely oppose each other then a vote has a partisanship of 100. If the two parties are indistinguishable, the partisanship is 0.</p>
+
+<p>Take the <a href="http://www.govtrack.us/congress/vote.xpd?vote=h2008-681">2008 House vote on the stimulus</a> as an example. The bill garnered 71.6% of the Democrats and 45.7% of the Republicans. That means there was a difference of 25.9% in the approval rate between the parties. And so that's the score for a fairly non-partisan vote.</p>
+
+<a href="https://docs.google.com/drawings/pub?id=1MLdttvOPSFSM2GZn37tTR_9xV_2DQE0YrmSET3jG2fI&amp;w=338&amp;h=264" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://docs.google.com/drawings/pub?id=1MLdttvOPSFSM2GZn37tTR_9xV_2DQE0YrmSET3jG2fI&amp;w=338&amp;h=264" /></a>
+
+<p>The scores are either averaged over the year (the 1900-2010 chart) or combined with a moving average (the 1990-now chart). Also, the scores only include <b>contested</b> votes. I consider a vote contested if more than 10% oppose the majority opinion. In other words, I'm looking for the votes that have at least some disagreement and then finding whether the disagreement falls along party lines. I added this condition so that all-to-common <a href="http://www.govtrack.us/congress/vote.xpd?vote=h2009-31">fluff votes</a> didn't dilute the average score.</p>
 
 <p>The graph above shows the discord between Republicans and Democrats for roll call votes in the US congress. A 0 score means the parties are indistinguishable while a score of 100 means complete opposition to one another.  Want the <a href="partisanship.html">nitty gritty</a>?</p>
 
 <hr/>
+
 <h3>Party Unity</h3>
 
-<p>Which party sticks together in the Senate?</p>
+<p>The next natural question is "who's to blame?". Attribution for the shift in the political landscape is beyond the scope of toying around with roll-call votes. Nonetheless I did find some interesting results from measuring the <b>unity</b> of each party. The unity score is similar to the partisanship score, but it measures how much a party sticks together on a vote. A unity of 100 means party members all voted the same way. A unity of 0 means they split 50-50.</p>
 
+<p>The most unified party tends to match the party in power. The effect of the 1994 'Republican Revolution' can be spotted at the beginning of 1995 as the Republicans became the most unified party in both the House and Senate. Conversely, the Democrats gained control of both branches after the 2005 elections and that also bears out in the unity graphs.</p>
+
+<h5>Senate Unity</h5>
 <p><div id="senate-unity" class="dygraph"></div></p>
 
-<p>Which party sticks together in the House?</p>
-
+<h5>House Unity</h5>
 <p><div id="house-unity" class="dygraph"></div></p>
-
-<h5>What is this?</h5>
-
-<p>The party unity graphs track how well each party sticks together.  A unity of 100 means all the party members vote the same way.  A unity of 0 means the party is split 50/50.  Want to know <a href="unity.html">more</a>?</p>
+<p>There's an odd looking annual pattern in the Republican's unity from 2002 to 2006. I don't have any good ideas as to why... so if you do, please let me know!</p>
 
       </section>
     </div>
