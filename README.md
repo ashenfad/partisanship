@@ -12,6 +12,3 @@ See the [results](http://ashenfad.github.com/partisanship/)!
 - Generate png graphs: `lein run :graph`
 - Generate dygraph CSVs: `lein run :dygraph`
 
-## Background
-
-http://blog.topolitics.com/2010/11/crisis-of-partisanship.html
