@@ -8,7 +8,6 @@ See the [results](http://ashenfad.github.com/partisanship/)!
 ## Usage
 
 - Install [Leiningen](https://github.com/technomancy/leiningen)
-- Scrape voting data: `lein run :scrape`
-- Generate png graphs: `lein run :graph`
-- Generate dygraph CSVs: `lein run :dygraph`
-
+- Scrape voting data: `lein scrape`
+- Generate png graphs: `lein graph`
+- Generate dygraph CSVs: `lein dygraph`
