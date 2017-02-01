@@ -12,7 +12,7 @@
 
 (defn- to-url [year vote]
   (let [{:keys [congress session]} (year-to-session year)]
-    (str "http://www.senate.gov/legislative/LIS/roll_call_votes/vote" congress
+    (str "https://www.senate.gov/legislative/LIS/roll_call_votes/vote" congress
          session "/vote_" congress "_" session "_" (format "%05d" vote) ".xml")))
 
 (defn- pattern [res pattern]
@@ -20,7 +20,9 @@
 
 (defn scraper [year vote]
   (try
-    (let [res (html/html-resource (java.net.URL. (to-url year vote)))
+    (let [_ (println "ADAM --- trying url...")
+          _ (println (to-url year vote))
+          res (html/html-resource (java.net.URL. (to-url year vote)))
           votes (map (fn [p v] {(keyword p) {(keyword (string/lower-case v)) 1}})
                      (pattern res [:party])
                      (pattern res [:vote_cast]))
@@ -28,6 +30,7 @@
           outcome (apply merge
                          (map (fn [[p o]] {p (select-keys o [:yea :nay])}) outcome))
           date (first (pattern res [:vote_date]))]
+      (println "ADAM - date: " date)
       (when date
         (println "Senate -" year vote)
         (if (not (or (empty? outcome) (empty? (:D outcome)) (empty? (:R outcome))))
